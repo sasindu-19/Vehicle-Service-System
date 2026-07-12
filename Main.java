@@ -11,7 +11,7 @@ public class Main{
         int choice = 0;
 
         System.out.println("==================================================");
-        System.out.println("  VEHICLE SERVICE QUEUE MANAGEMENT SYSTEM (CLI)   ");
+        System.out.println("        VEHICLE SERVICE MANAGEMENT SYSTEM         ");
         System.out.println("==================================================");
 
         while (choice != 5) {
