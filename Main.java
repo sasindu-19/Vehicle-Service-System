@@ -1,72 +1,98 @@
 import java.util.Scanner;
 
-public class Main{
+public class Main {
+
     public static void main(String[] args) {
-        String[] servicePackages = {"Full Service","Body Wash","Engine Tuning","Break Repair"};
+
+        String[] servicePackages = {
+            "Full Service", "Body Wash", "Engine Tuning", "Brake Repair"
+        };
 
         VehicleQueue serviceQueue = new VehicleQueue();
         VehicalStack historyStack = new VehicalStack();
-        VehicleTree  serviceTree  = new VehicleTree();   // BST - stores serviced vehicles
+        VehicleTree  serviceTree  = new VehicleTree();
 
         Scanner scanner = new Scanner(System.in);
         int choice = 0;
 
         System.out.println("==================================================");
-        System.out.println("        VEHICLE SERVICE MANAGEMENT SYSTEM         ");
+        System.out.println("      VEHICLE SERVICE MANAGEMENT SYSTEM           ");
         System.out.println("==================================================");
+        System.out.println();
 
         while (choice != 6) {
-            System.out.println("\n--- MAIN MENU ---");
-            System.out.println("1. Add New Vehicle to Queue (Enqueue)");
-            System.out.println("2. Process/Service Next Vehicle (Dequeue -> Push to History)");
-            System.out.println("3. View Live Waiting Queue (Display Queue)");
-            System.out.println("4. View Completed Service History (Display Stack)");
-            System.out.println("--- BST (Binary Search Tree) ---");
-            System.out.println("5. Search Serviced Vehicle by Plate (BST Search)");
-            System.out.println("6. Exit System");
-            System.out.print("Enter your choice (1-6): ");
+
+            System.out.println();
+            System.out.println("  MAIN MENU");
+            System.out.println("  --------------------------------------------------");
+            System.out.println("  [1]  Register New Vehicle");
+            System.out.println("  [2]  Service Next Vehicle");
+            System.out.println("  [3]  View Waiting Vehicles");
+            System.out.println("  [4]  View Service History");
+            System.out.println("  [5]  Search Vehicle by Plate Number");
+            System.out.println("  [6]  Exit");
+            System.out.println("  --------------------------------------------------");
+            System.out.print("  Enter your choice: ");
 
             if (scanner.hasNextInt()) {
                 choice = scanner.nextInt();
                 scanner.nextLine();
-            }else{
-                System.out.println("Invalid input! Please enter a number between 1 and 6");
+            } else {
+                System.out.println("  Invalid input. Please enter a number (1-6).");
                 scanner.nextLine();
                 continue;
             }
 
             switch (choice) {
-                case 1:
-                    System.out.println("Enter Vehical Number: ");
-                    String Vnum = scanner.nextLine().trim();
 
-                    System.out.println("Enter Owner's Name: ");
+                case 1:
+                    System.out.println();
+                    System.out.println("  ==================================================");
+                    System.out.println("    REGISTER NEW VEHICLE");
+                    System.out.println("  ==================================================");
+
+                    System.out.print("  Vehicle Plate No. : ");
+                    String Vnum = scanner.nextLine().trim().toUpperCase();
+
+                    System.out.print("  Owner Name        : ");
                     String oName = scanner.nextLine().trim();
 
-                    System.out.println("Available Services: ");
-                    for(int i=0; i<servicePackages.length; i++){
-                        System.out.println(" [" + (i + 1) + "]" + servicePackages[i]);
+                    System.out.println();
+                    System.out.println("  Available Services:");
+                    System.out.println("  --------------------------------------------------");
+                    for (int i = 0; i < servicePackages.length; i++) {
+                        System.out.println("  [" + (i + 1) + "]  " + servicePackages[i]);
+                    }
+                    System.out.println("  --------------------------------------------------");
+                    System.out.print("  Select service    : ");
+
+                    int serviceChoice = 1;
+                    if (scanner.hasNextInt()) {
+                        serviceChoice = scanner.nextInt();
+                        scanner.nextLine();
+                    } else {
+                        scanner.nextLine();
                     }
 
-                    System.out.println("Select Service Number: ");
-                    int serviceChoice = scanner.nextInt();
-                    scanner.nextLine();
-
                     String sType;
-                    if (serviceChoice >=1 && serviceChoice <= servicePackages.length) {
+                    if (serviceChoice >= 1 && serviceChoice <= servicePackages.length) {
                         sType = servicePackages[serviceChoice - 1];
-                    }else{
-                        System.out.println("Invalid selection! Defaulting to General Service.");
+                    } else {
+                        System.out.println("  Invalid selection. Defaulting to General Service.");
                         sType = "General Service";
                     }
 
-                    System.out.println("Select Priority: [1] HIGH  [2] NORMAL  [3] LOW");
-                    int priorityChoice = 2;  // default NORMAL
+                    System.out.println();
+                    System.out.println("  Priority Level:");
+                    System.out.println("  [1]  High     [2]  Normal     [3]  Low");
+                    System.out.print("  Select priority   : ");
+
+                    int priorityChoice = 2;
                     if (scanner.hasNextInt()) {
                         priorityChoice = scanner.nextInt();
                         scanner.nextLine();
                         if (priorityChoice < 1 || priorityChoice > 3) {
-                            System.out.println("Invalid priority! Defaulting to NORMAL.");
+                            System.out.println("  Invalid priority. Defaulting to Normal.");
                             priorityChoice = 2;
                         }
                     } else {
@@ -74,67 +100,90 @@ public class Main{
                     }
 
                     if (Vnum.isEmpty() || oName.isEmpty()) {
-                        System.out.println("Error: Vehicle Number and Owner Name cannot be empty!");
-                    }else{
+                        System.out.println("  Plate number and owner name cannot be empty.");
+                    } else {
                         Vehical newVehical = new Vehical(Vnum, oName, sType, priorityChoice);
                         serviceQueue.enqueue(newVehical);
                     }
                     break;
-            
-                case 2:
-                    Vehical servicedVehical = serviceQueue.dequeue();
 
+                case 2:
+                    System.out.println();
+                    System.out.println("  ==================================================");
+                    System.out.println("    SERVICE NEXT VEHICLE");
+                    System.out.println("  ==================================================");
+                    Vehical servicedVehical = serviceQueue.dequeue();
                     if (servicedVehical != null) {
-                        servicedVehical.serviceStatus = "SERVICED";   // update status
-                        historyStack.push(servicedVehical);            // Stack - LIFO history
-                        serviceTree.insert(servicedVehical);           // BST  - auto insert
-                        System.out.println("Success: Vehicle moved to history records.");
+                        servicedVehical.serviceStatus = "Serviced";
+                        historyStack.push(servicedVehical);
+                        serviceTree.insert(servicedVehical);
                     }
                     break;
 
                 case 3:
+                    System.out.println();
+                    System.out.println("  ==================================================");
+                    System.out.println("    WAITING VEHICLES");
+                    System.out.println("  ==================================================");
                     serviceQueue.display();
                     break;
 
                 case 4:
+                    System.out.println();
+                    System.out.println("  ==================================================");
+                    System.out.println("    SERVICE HISTORY");
+                    System.out.println("  ==================================================");
                     historyStack.displayHistory();
                     break;
 
                 case 5:
-                    // Search by plate — check Queue (WAITING) first, then BST (SERVICED)
-                    System.out.print("Enter Plate Number to search: ");
+                    System.out.println();
+                    System.out.println("  ==================================================");
+                    System.out.println("    SEARCH VEHICLE");
+                    System.out.println("  ==================================================");
+                    System.out.print("  Plate Number : ");
                     String searchPlate = scanner.nextLine().trim().toUpperCase();
+
+                    if (searchPlate.isEmpty()) {
+                        System.out.println("  Plate number cannot be empty.");
+                        break;
+                    }
 
                     Vehical inQueue = serviceQueue.searchByPlate(searchPlate);
                     if (inQueue != null) {
-                        // Found in Queue → still WAITING
                         String pLabel;
                         switch (inQueue.priority) {
-                            case 1: pLabel = "HIGH";   break;
-                            case 2: pLabel = "NORMAL"; break;
-                            case 3: pLabel = "LOW";    break;
-                            default: pLabel = "UNKNOWN";
+                            case 1:  pLabel = "High";    break;
+                            case 2:  pLabel = "Normal";  break;
+                            case 3:  pLabel = "Low";     break;
+                            default: pLabel = "Unknown"; break;
                         }
-                        System.out.println("  [FOUND]");
-                        System.out.println("    Plate    : " + inQueue.vehicalNumber);
-                        System.out.println("    Owner    : " + inQueue.ownerName);
-                        System.out.println("    Service  : " + inQueue.serviceType);
-                        System.out.println("    Priority : " + pLabel);
-                        System.out.println("    Status   : WAITING");
+                        System.out.println();
+                        System.out.println("  --------------------------------------------------");
+                        System.out.printf("  %-14s : %s%n", "Plate No.",  inQueue.vehicalNumber);
+                        System.out.printf("  %-14s : %s%n", "Owner",      inQueue.ownerName);
+                        System.out.printf("  %-14s : %s%n", "Service",    inQueue.serviceType);
+                        System.out.printf("  %-14s : %s%n", "Priority",   pLabel);
+                        System.out.printf("  %-14s : %s%n", "Status",     "Waiting");
+                        System.out.println("  --------------------------------------------------");
                     } else {
-                        // Not in queue — search BST (SERVICED vehicles)
                         serviceTree.search(searchPlate);
                     }
                     break;
 
                 case 6:
-                    System.out.println("Exiting the system. Thank you!");
+                    System.out.println();
+                    System.out.println("  ==================================================");
+                    System.out.println("  Thank you. Goodbye!");
+                    System.out.println("  ==================================================");
+                    System.out.println();
                     break;
 
                 default:
-                    System.out.println("Invalid choice! Please select a valid option.");
+                    System.out.println("  Invalid choice. Please enter a number (1-6).");
             }
         }
+
         scanner.close();
     }
 }

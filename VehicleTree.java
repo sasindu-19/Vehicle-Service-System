@@ -1,97 +1,68 @@
-/**
- * VehicleTree.java
- * Binary Search Tree (BST) to store SERVICED vehicles.
- *
- * DATA STRUCTURE: Binary Search Tree (BST)
- *   - Key: vehicalNumber (plate number) - lexicographic order
- *   - Insert : O(log n) average
- *   - Search : O(log n) average
- *   - Traversal: O(n)
- *
- * ALGORITHMS:
- *   - BST Insert  (recursive)
- *   - BST Search  (recursive)
- *   - In-Order Traversal  -> sorted output by plate number
- */
 public class VehicleTree {
 
-    // ---- Inner BST Node class ----
     private class Node {
         Vehical data;
         Node left, right;
 
         Node(Vehical v) {
-            this.data = v;
+            this.data  = v;
             this.left  = null;
             this.right = null;
         }
     }
 
-    private Node root;  // root of the BST
+    private Node root;
 
     public VehicleTree() {
         this.root = null;
     }
 
-    // ================================================================
-    //  INSERT - BST Insert by vehicalNumber (lexicographic)
-    //  Time Complexity: O(log n) average, O(n) worst case
-    // ================================================================
+    //Insert by vehicalNumber
     public void insert(Vehical v) {
         root = insertRec(root, v);
-        System.out.println("  [BST] Vehicle [" + v.vehicalNumber + "] inserted into BST.");
     }
 
     private Node insertRec(Node node, Vehical v) {
-        if (node == null) return new Node(v);   // Found empty spot - insert here
-
+        if (node == null) return new Node(v);
         int cmp = v.vehicalNumber.compareToIgnoreCase(node.data.vehicalNumber);
-
         if (cmp < 0) {
-            node.left  = insertRec(node.left,  v);   // Go left
+            node.left  = insertRec(node.left,  v);
         } else if (cmp > 0) {
-            node.right = insertRec(node.right, v);   // Go right
-        } else {
-            System.out.println("  [BST] Vehicle [" + v.vehicalNumber + "] already in tree.");
+            node.right = insertRec(node.right, v);
         }
         return node;
     }
 
-    // ================================================================
-    //  SEARCH - BST Search by plate number
-    //  Time Complexity: O(log n) average
-    // ================================================================
+    //Search by plate number
     public void search(String plateNumber) {
-        System.out.println("\n  Searching BST for: " + plateNumber + "...");
         Node result = searchRec(root, plateNumber.toUpperCase());
 
         if (result != null) {
-            String priorityLabel;
+            String pLabel;
             switch (result.data.priority) {
-                case 1: priorityLabel = "HIGH";   break;
-                case 2: priorityLabel = "NORMAL"; break;
-                case 3: priorityLabel = "LOW";    break;
-                default: priorityLabel = "UNKNOWN";
+                case 1:  pLabel = "High";    break;
+                case 2:  pLabel = "Normal";  break;
+                case 3:  pLabel = "Low";     break;
+                default: pLabel = "Unknown"; break;
             }
-            System.out.println("  [FOUND]");
-            System.out.println("    Plate    : " + result.data.vehicalNumber);
-            System.out.println("    Owner    : " + result.data.ownerName);
-            System.out.println("    Service  : " + result.data.serviceType);
-            System.out.println("    Priority : " + priorityLabel);
-            System.out.println("    Status   : SERVICED");
+            System.out.println();
+            System.out.println("  --------------------------------------------------");
+            System.out.printf("  %-14s : %s%n", "Plate No.", result.data.vehicalNumber);
+            System.out.printf("  %-14s : %s%n", "Owner",     result.data.ownerName);
+            System.out.printf("  %-14s : %s%n", "Service",   result.data.serviceType);
+            System.out.printf("  %-14s : %s%n", "Priority",  pLabel);
+            System.out.printf("  %-14s : %s%n", "Status",    result.data.serviceStatus);
+            System.out.println("  --------------------------------------------------");
         } else {
-            System.out.println("  [NOT FOUND] No serviced vehicle with plate: " + plateNumber);
+            System.out.println("  No record found for plate: " + plateNumber);
         }
     }
 
     private Node searchRec(Node node, String plate) {
-        if (node == null) return null;   // Not found
-
+        if (node == null) return null;
         int cmp = plate.compareToIgnoreCase(node.data.vehicalNumber);
-
-        if      (cmp == 0) return node;                        // Found!
-        else if (cmp < 0)  return searchRec(node.left,  plate); // Search left
-        else               return searchRec(node.right, plate); // Search right
+        if      (cmp == 0) return node;
+        else if (cmp  < 0) return searchRec(node.left,  plate);
+        else               return searchRec(node.right, plate);
     }
-
 }

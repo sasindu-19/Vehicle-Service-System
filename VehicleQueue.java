@@ -1,69 +1,64 @@
-public class VehicleQueue{
+public class VehicleQueue {
     Vehical front;
     Vehical rear;
 
-    public VehicleQueue(){
+    public VehicleQueue() {
         this.front = null;
-        this.rear = null;
+        this.rear  = null;
     }
 
-    public void enqueue(Vehical newVehical){
+    public void enqueue(Vehical newVehical) {
         if (rear == null) {
             front = rear = newVehical;
-            System.out.println("Vehical ["+ newVehical.vehicalNumber +"] added to the System Successfully");
-            return;
+        } else {
+            rear.next = newVehical;
+            rear = newVehical;
         }
-
-        rear.next = newVehical;
-        rear = newVehical;
-        System.out.println("Vehical ["+ newVehical.vehicalNumber +"] added to the System Successfully");
+        System.out.println("  Vehicle [" + newVehical.vehicalNumber + "] registered successfully.");
     }
 
-    public Vehical dequeue(){
+    public Vehical dequeue() {
         if (front == null) {
-            System.out.println("empty! No vehicals to service.");
+            System.out.println("  No vehicles waiting for service.");
             return null;
         }
-
         Vehical temp = front;
         front = front.next;
-
         if (front == null) {
             rear = null;
         }
-
-        System.out.println("Vehical ["+ temp.vehicalNumber +"] removed for service.");
+        System.out.println("  Processing vehicle [" + temp.vehicalNumber + "] ...");
         return temp;
-
     }
 
-    public void display(){
-        if(front == null){
-            System.out.println("The live service queue is currently empty.");
+    public void display() {
+        if (front == null) {
+            System.out.println("  No vehicles currently waiting.");
             return;
         }
-
-        System.out.println("\n--- LIVE SERVICE QUEUE ---");
+        System.out.println();
+        System.out.println("  No.   Plate No.        Owner                Service");
+        System.out.println("  ------------------------------------------------------------");
         Vehical current = front;
         int position = 1;
-
         while (current != null) {
-            System.out.println(position + ".["+ current.vehicalNumber +"] | Owner: "+ current.ownerName +"| Service: " + current.serviceType);
+            System.out.printf("  %-5d %-16s %-20s %s%n",
+                    position, current.vehicalNumber, current.ownerName, current.serviceType);
             current = current.next;
             position++;
         }
-        System.out.println("--------------------------\n");
+        System.out.println("  ------------------------------------------------------------");
+        System.out.println();
     }
 
-    // SEARCH by plate number - used to check if vehicle is still WAITING
     public Vehical searchByPlate(String plateNumber) {
         Vehical current = front;
         while (current != null) {
             if (current.vehicalNumber.equalsIgnoreCase(plateNumber)) {
-                return current;   // Found in queue → still WAITING
+                return current;
             }
             current = current.next;
         }
-        return null;   // Not in queue
+        return null;
     }
 }
