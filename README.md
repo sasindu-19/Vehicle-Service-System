@@ -49,7 +49,7 @@ Vehicle-Service-System/
 
 **1. Clone the repository**
 ```bash
-git clone https://github.com/<your-username>/Vehicle-Service-System.git
+git clone https://github.com/sasindu-19/Vehicle-Service-System.git
 cd Vehicle-Service-System
 ```
 
@@ -92,5 +92,5 @@ java Main
 ## Author
 
 **Sasindu**  
-BSc (Hons) in Information Technology  
+Bachelor of Information and Communication Technology BICT (Hons) 
 2nd Semester — Data Structures & Algorithms (ICT 143-2)
