@@ -54,4 +54,16 @@ public class VehicleQueue{
         }
         System.out.println("--------------------------\n");
     }
+
+    // SEARCH by plate number - used to check if vehicle is still WAITING
+    public Vehical searchByPlate(String plateNumber) {
+        Vehical current = front;
+        while (current != null) {
+            if (current.vehicalNumber.equalsIgnoreCase(plateNumber)) {
+                return current;   // Found in queue → still WAITING
+            }
+            current = current.next;
+        }
+        return null;   // Not in queue
+    }
 }
