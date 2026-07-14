@@ -92,5 +92,5 @@ java Main
 ## Author
 
 **Sasindu**  
-Bachelor of Information and Communication Technology BICT (Hons) 
+Bachelor of Information and Communication Technology BICT (Hons)  
 2nd Semester — Data Structures & Algorithms (ICT 143-2)
