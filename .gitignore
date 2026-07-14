@@ -1,0 +1,13 @@
+# Compiled class files
+*.class
+
+# Package Files
+*.jar
+*.war
+*.ear
+
+# BlueJ files
+*.bjp
+
+# VS Code
+.vscode/
